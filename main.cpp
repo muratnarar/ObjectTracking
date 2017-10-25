@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  TestOpenCV
+//  ObjectTracking
 //
 //  Created by Nuri Murat ARAR on 09.10.17.
 //  Copyright © 2017 Nuri Murat ARAR. All rights reserved.
@@ -22,11 +22,9 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    // List of tracker types in OpenCV 3.2
-    // NOTE : GOTURN implementation is buggy and does not work.
+    // List of tracker types in OpenCV 3.3
     string trackerTypes[6] = {"BOOSTING", "MIL", "KCF", "TLD","MEDIANFLOW", "GOTURN"};
-    // vector <string> trackerTypes(types, std::end(types));
-    
+   
     if ( argc < 2 )
     {
         printf("usage: <Video_Path> <tracker type> \n");
@@ -36,7 +34,7 @@ int main(int argc, char **argv)
     cout<<"Tracker type: "<<argv[2]<<endl;
     
     // Read video
-    VideoCapture video(atoi(argv[1]));
+    VideoCapture video(argv[1]);
     
     // Exit if video is not opened
     if(!video.isOpened())
@@ -51,26 +49,18 @@ int main(int argc, char **argv)
     
     Ptr<Tracker> tracker;
     
-#if (CV_MINOR_VERSION < 3)
-    {
-        tracker = Tracker::create(trackerType);
-    }
-#else
-    {
-        if (trackerType == "BOOSTING")
-            tracker = TrackerBoosting::create();
-        if (trackerType == "MIL")
-            tracker = TrackerMIL::create();
-        if (trackerType == "KCF")
-            tracker = TrackerKCF::create();
-        if (trackerType == "TLD")
-            tracker = TrackerTLD::create();
-        if (trackerType == "MEDIANFLOW")
-            tracker = TrackerMedianFlow::create();
-        if (trackerType == "GOTURN")
-            tracker = TrackerGOTURN::create();
-    }
-#endif
+    if (trackerType == "BOOSTING")
+        tracker = TrackerBoosting::create();
+    if (trackerType == "MIL")
+        tracker = TrackerMIL::create();
+    if (trackerType == "KCF")
+        tracker = TrackerKCF::create();
+    if (trackerType == "TLD")
+        tracker = TrackerTLD::create();
+    if (trackerType == "MEDIANFLOW")
+        tracker = TrackerMedianFlow::create();
+    if (trackerType == "GOTURN")
+        tracker = TrackerGOTURN::create();
     
     // Read first frame
     Mat frame;
